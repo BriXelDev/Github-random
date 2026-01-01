@@ -33,9 +33,21 @@ function Hero() {
                 />
                 <button onClick={handleSearch} disabled={loading}>{loading ? 'Buscando...' : 'Buscar Repositorio Aleatorio'}</button>
             </div>
-        
-        </section>
 
+            {repo && (
+                <div className="repo-card">
+                    <h2>{repo.name}</h2>
+                    <p>{repo.description}</p>
+                    <div className="repo-stats">
+                        <span>Stars: {repo.stars} </span>
+                        <span>Forks: {repo.forks_count} </span>
+                        <span>Language: {repo.language} </span>
+                    </div>
+                    <a href={repo.html_url} target="_blank" rel="noopener noreferrer">Ver en Github
+                    </a>
+                </div>
+            )}
+        </section>
     );
 }
 
