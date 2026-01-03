@@ -21,7 +21,7 @@ function Hero() {
     // Estado que almacena el lenguaje seleccionado actualmente
     // Valor inicial: 'javascript'
     // setLanguage: función para cambiar el lenguaje
-    const [language, setLanguage] = useState('javascript');
+    const [language, setLanguage] = useState('ABAP');
     
     // Estado que almacena el repositorio que se mostró en pantalla
     // Valor inicial: null (sin repositorio seleccionado)
