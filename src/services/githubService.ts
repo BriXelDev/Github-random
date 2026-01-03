@@ -50,6 +50,18 @@ export async function searchRepositories(language: string, perPage: number = 10)
     }));
 }
 
+export let AVAILABLE_LANGUAGES: {[key: string]: string} = {};
+
+export async function loadLanguages() {
+    try{
+        const response = await fetch('./languages.json');
+        if(!response.ok) throw new Error('Error loading languages');
+        AVAILABLE_LANGUAGES = await response.json();
+    } catch (error) {
+        console.error("Failed to load languages:", error);
+    }
+}
+
 // Función que selecciona un repositorio al azar del array de repositorios
 // Parámetro:
 //   - repos: array de repositorios de donde elegir
