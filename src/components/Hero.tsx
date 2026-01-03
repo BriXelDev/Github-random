@@ -1,12 +1,17 @@
 import './styles/Hero.css'
-import { useState } from 'react';
-import { searchRepositories, getRandomRepository } from '../services/githubService';
+import { useEffect, useState } from 'react';
+import { searchRepositories, getRandomRepository, AVAILABLE_LANGUAGES, loadLanguages } from '../services/githubService';
 import type { Repository } from '../services/githubService';
 
 function Hero() {
     const [language, setLanguage] = useState('javascript');
     const [repo, setRepo] = useState<Repository | null>(null);
     const [loading, setLoading] = useState(false);
+    const [languagesLoaded, setLanguagesLoaded] = useState(false);
+
+    useEffect(() => {
+        loadLanguages().then(() => setLanguagesLoaded(true));
+    }, []);
 
     const handleSearch = async () => {
         setLoading(true);
@@ -25,13 +30,18 @@ function Hero() {
         <section className="hero"> 
             <h1>Github Random</h1>
             <div className="search-container"> 
-                <input 
-                    type="text"
-                    placeholder="Lenguaje de programación (ej: javascript, python, rust)"
+                <select 
                     value={language}
                     onChange={(e) => setLanguage(e.target.value)}
-                />
-                <button onClick={handleSearch} disabled={loading}>{loading ? 'Buscando...' : 'Buscar Repositorio Aleatorio'}</button>
+                    disabled={!languagesLoaded}
+                >
+                    {Object.entries(AVAILABLE_LANGUAGES).map(([key, value]) => (
+                        <option key={key} value={key}>
+                            {value}
+                        </option>
+                    ))}
+                </select>
+                <button onClick={handleSearch} disabled={loading || !languagesLoaded}>{loading ? 'Buscando...' : 'Buscar Repositorio Aleatorio'}</button>
             </div>
 
             {repo && (

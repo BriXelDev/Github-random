@@ -10,6 +10,24 @@ export interface Repository {
     forks_count: number;     // Cantidad de veces que fue copiado (forked)
 }
 
+
+export let AVAILABLE_LANGUAGES: {[key: string]: string} = {};
+
+export async function loadLanguages() {
+    try{
+        const response = await fetch('/languages.json');
+        if(!response.ok) throw new Error('Error loading languages');
+        const data = await response.json();
+        // Convierte el array de objetos {title, value} a un objeto {value: title}
+        AVAILABLE_LANGUAGES = data.reduce((acc: {[key: string]: string}, item: any) => {
+            acc[item.value] = item.title;
+            return acc;
+        }, {});
+    } catch (error) {
+        console.error("Failed to load languages:", error);
+    }
+}
+
 // Función asincrónica que busca repositorios en GitHub
 // Parámetros:
 //   - language: el lenguaje de programación a buscar (ej: "javascript", "python")
@@ -48,18 +66,6 @@ export async function searchRepositories(language: string, perPage: number = 10)
         language: item.language,
         forks_count: item.forks_count,
     }));
-}
-
-export let AVAILABLE_LANGUAGES: {[key: string]: string} = {};
-
-export async function loadLanguages() {
-    try{
-        const response = await fetch('./languages.json');
-        if(!response.ok) throw new Error('Error loading languages');
-        AVAILABLE_LANGUAGES = await response.json();
-    } catch (error) {
-        console.error("Failed to load languages:", error);
-    }
 }
 
 // Función que selecciona un repositorio al azar del array de repositorios
