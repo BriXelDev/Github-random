@@ -76,7 +76,7 @@ function Hero() {
         // Retorna la estructura JSX (HTML + JavaScript) que se renderiza en pantalla
         <section className="hero"> 
             {/* Título principal de la aplicación */}
-            <h1>Github Random</h1>
+            <h1>¡Busca un repositorio al azar!</h1>
             
             {/* Contenedor del select de lenguajes y botón de búsqueda */}
             <div className="search-container"> 
