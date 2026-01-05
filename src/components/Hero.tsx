@@ -38,6 +38,11 @@ function Hero() {
     // Se usa para deshabilitar el select y botón hasta que estén listos
     const [languagesLoaded, setLanguagesLoaded] = useState(false);
 
+    // Estado que almacena el mensaje de error si algo sale mal
+    // null = sin error, string = mensaje de error a mostrar al usuario
+    // setError: función para actualizar el mensaje de error
+    const [error, setError] = useState<string | null>(null);
+
     // Hook que se ejecuta cuando el componente se monta (aparece por primera vez)
     // El array [] vacío significa que solo se ejecuta una vez, no cuando otras cosas cambian
     useEffect(() => {
@@ -51,6 +56,8 @@ function Hero() {
     const handleSearch = async () => {
         // Marca que se está cargando (muestra "Buscando..." en el botón)
         setLoading(true);
+        // Limpia cualquier error previo al iniciar una nueva búsqueda
+        setError(null);
         try{
             // Llama a searchRepositories() pasando el lenguaje seleccionado
             // Espera a que la API de GitHub devuelva una lista de repositorios
@@ -63,8 +70,10 @@ function Hero() {
             // Esto hace que aparezca la tarjeta con la información del repositorio
             setRepo(random);
         } catch (error){
-            // Si hay un error en la búsqueda o selección, lo muestra en la consola
-            console.error('Error: ', error);
+            // Captura el mensaje de error y lo guarda en el estado para mostrar al usuario
+            // Si no hay mensaje disponible, muestra un mensaje genérico
+            const errorMessage = error instanceof Error ? error.message : 'Error desconocido al buscar repositorios';
+            setError(errorMessage);
         } finally {
             // Siempre que termine (éxito o error), marca que terminó de cargar
             // Esto muestra el texto normal del botón nuevamente
@@ -149,6 +158,20 @@ function Hero() {
                     <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
                         Ver en Github
                     </a>
+                </div>
+            )}
+
+            {/* 
+                Mensaje de error (solo se muestra si hay un error)
+                error && ... significa: solo renderiza si error NO es null
+                Se muestra en el mismo lugar donde aparece la tarjeta del repositorio
+            */}
+            {error && (
+                <div className="error-card">
+                    {/* Icono o título del error */}
+                    <h3>❌ Error</h3>
+                    {/* Mensaje descriptivo del error */}
+                    <p>{error}</p>
                 </div>
             )}
         </section>

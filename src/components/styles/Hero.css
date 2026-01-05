@@ -29,3 +29,22 @@ button:hover{
     background-color: #f5f5f5;
     border-radius: 50px;
 }
+
+.error-card{
+    margin-top: 1%;
+    border: 5px solid #dc3545;
+    background-color: #f8d7da;
+    border-radius: 50px;
+    padding: 2rem;
+    color: #721c24;
+}
+
+.error-card h3{
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #721c24;
+}
+
+.error-card p{
+    margin: 0.5rem 0;
+}
